@@ -413,7 +413,7 @@ agent_executor = AgentExecutor(
     tools=[scrape_url_to_dataframe],
     verbose=True,
     max_iterations=3,
-    early_stopping_method="generate",
+    early_stopping_method="length",
     handle_parsing_errors=True,
     return_intermediate_steps=False
 )
