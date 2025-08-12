@@ -667,3 +667,28 @@ if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=int(os.getenv("PORT", 8000)))
 
+
+
+
+
+
+from flask import Flask, request, jsonify
+import traceback
+
+@app.route("/api/analyze", methods=["POST"])
+def analyze():
+    try:
+        data = request.json
+        llm_input = data.get("input")
+
+        response = agent_executor.invoke(
+            {"input": llm_input},
+            {"timeout": LLM_TIMEOUT_SECONDS}
+        )
+        return jsonify({"result": response})
+
+    except Exception as e:
+        print("\n--- ERROR in /api/analyze ---")
+        traceback.print_exc()
+        print("--- END ERROR ---\n")
+        return jsonify({"error": str(e)}), 500
